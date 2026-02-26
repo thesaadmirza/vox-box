@@ -70,7 +70,12 @@ async def speech(request: SpeechRequest):
             gen = model_instance.speech_stream(
                 request.input, request.voice, request.speed
             )
-            return StreamingResponse(gen, media_type="audio/pcm")
+            headers = {
+                "X-Audio-Sample-Rate": "22050",
+                "X-Audio-Channels": "1",
+                "X-Audio-Sample-Width": "16",
+            }
+            return StreamingResponse(gen, media_type="audio/pcm", headers=headers)
 
         func = functools.partial(
             model_instance.speech,
