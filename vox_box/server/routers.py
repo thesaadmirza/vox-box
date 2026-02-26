@@ -153,7 +153,10 @@ async def _parse_transcription_form(request: Request):
     audio_bytes = await file.read()
     language = form.get("language")
     prompt = form.get("prompt")
-    temperature = float(form.get("temperature", 0))
+    try:
+        temperature = float(form.get("temperature", 0.2))
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid temperature value. It must be a float.")
     if not (0 <= temperature <= 1):
         raise HTTPException(
             status_code=400, detail="Temperature must be between 0 and 1"
