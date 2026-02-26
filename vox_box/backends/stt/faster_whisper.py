@@ -162,6 +162,7 @@ class FasterWhisper(STTBackend):
             language=language,
             initial_prompt=prompt,
             temperature=temperature,
+            without_timestamps=True,
         )
 
         for seg in segs:
